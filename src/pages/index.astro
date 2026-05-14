@@ -461,25 +461,25 @@ const stats = [
 
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-forest-900">Certificering</p>
-                <p class="text-forest-600">Reageer binnen 5 werkdagen</p>
+                <p class="font-semibold text-forest-900">Reactietijd</p>
+                <p class="text-forest-600">Doorgaans binnen 2 werkdagen</p>
               </div>
             </div>
 
             <div class="flex items-start gap-4">
               <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                 </svg>
               </div>
               <div>
-                <p class="font-semibold text-forest-900">Milieumeetnet Nederland</p>
-                <p class="text-forest-600 text-sm">Landelijk netwerk milieumonitoring</p>
+                <p class="font-semibold text-forest-900">Certificering</p>
+                <p class="text-forest-600 text-sm">Voldoet aan onafhankelijke normen</p>
               </div>
             </div>
           </div>
@@ -582,7 +582,30 @@ const stats = [
     </div>
   </footer>
 
+  <!-- Back to top -->
+  <button
+    id="back-to-top"
+    type="button"
+    aria-label="Terug naar boven"
+    class="fixed bottom-6 right-6 z-40 w-12 h-12 bg-forest-700 hover:bg-forest-800 text-white rounded-full shadow-lg opacity-0 pointer-events-none translate-y-2 transition-all duration-300 flex items-center justify-center">
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
   <script>
+    // Back-to-top toggle
+    const backBtn = document.getElementById('back-to-top') as HTMLButtonElement;
+    const toggleBackBtn = () => {
+      if (window.scrollY > 600) {
+        backBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      } else {
+        backBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }
+    };
+    window.addEventListener('scroll', toggleBackBtn, { passive: true });
+    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
     const form = document.getElementById('contact-form') as HTMLFormElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
     const btnText = document.getElementById('btn-text') as HTMLSpanElement;

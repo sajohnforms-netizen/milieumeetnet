@@ -5,6 +5,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
   }
 
   body {
@@ -13,6 +14,10 @@
 
   h1, h2, h3, h4 {
     @apply font-semibold tracking-tight;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
   }
 }
 

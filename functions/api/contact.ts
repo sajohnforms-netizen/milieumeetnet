@@ -29,7 +29,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   const emailBody = [
-    'Nieuw contactformulier bericht via milieumeetnet.nl',
+    'Nieuw contactformulier bericht via milieumeetnet.nl (geforward naar sajrecherche)',
     '',
     `Naam:          ${fields.name}`,
     `Organisatie:   ${fields.organisation || '—'}`,
@@ -47,7 +47,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   try {
     await sendEmail(env.RESEND_API_KEY, {
-      to: ['info@sajrecherche.com'],
+      to: ['info@milieumeetnet.nl'],
       replyTo: fields.email,
       subject: `Contact: ${fields.subject || 'Nieuw bericht'} — ${fields.name}`,
       text: emailBody,

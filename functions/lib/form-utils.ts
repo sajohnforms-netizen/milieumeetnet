@@ -52,7 +52,7 @@ export async function sendEmail(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: options.from || 'Milieumeetnet Nederland <noreply@milieumeetnet.nl>',
+      from: options.from || 'Milieumeetnet Nederland <noreply@sajrecherche.com>',
       to: options.to,
       ...(options.replyTo ? { reply_to: options.replyTo } : {}),
       subject: options.subject,

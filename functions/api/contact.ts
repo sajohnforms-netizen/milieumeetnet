@@ -47,7 +47,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   try {
     await sendEmail(env.RESEND_API_KEY, {
-      to: ['info@milieumeetnet.nl'],
+      to: ['info@sajrecherche.com'],
       replyTo: fields.email,
       subject: `Contact: ${fields.subject || 'Nieuw bericht'} — ${fields.name}`,
       text: emailBody,

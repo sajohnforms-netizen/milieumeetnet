@@ -1,0 +1,554 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+
+const meetstations = [
+  { id: 'MMN-NL/sector-01', locatie: 'Amsterdam-Noord', type: 'Lucht + Geluid', status: 'Actief' },
+  { id: 'MMN-NL/sector-04', locatie: 'Rotterdam Rijnmond', type: 'Lucht + Klimaat', status: 'Actief' },
+  { id: 'MMN-NL/sector-07', locatie: 'Utrecht Centrum', type: 'Fijnstof', status: 'Actief' },
+  { id: 'MMN-NL/sector-12', locatie: 'Eindhoven Industrie', type: 'Lucht + Geluid + Klimaat', status: 'Actief' },
+  { id: 'MMN-NL/sector-15', locatie: 'Groningen Eemshaven', type: 'Klimaat', status: 'Actief' },
+  { id: 'MMN-NL/sector-19', locatie: 'Den Haag Scheveningen', type: 'Lucht + Klimaat', status: 'Actief' },
+];
+
+const metingen = [
+  { label: 'PM2.5', naam: 'Fijnstof', eenheid: 'μg/m³', icon: 'cloud' },
+  { label: 'PM10', naam: 'Grove deeltjes', eenheid: 'μg/m³', icon: 'cloud' },
+  { label: 'NO₂', naam: 'Stikstofdioxide', eenheid: 'μg/m³', icon: 'molecule' },
+  { label: 'dB(A)', naam: 'Geluidsniveau', eenheid: 'decibel', icon: 'sound' },
+  { label: '°C', naam: 'Temperatuur', eenheid: 'Celsius', icon: 'temp' },
+  { label: 'RH%', naam: 'Luchtvochtigheid', eenheid: 'procent', icon: 'drop' },
+];
+
+const stats = [
+  { value: '247', label: 'Meetstations actief' },
+  { value: '12', label: 'Sectoren landelijk' },
+  { value: '99.4%', label: 'Uptime 2025' },
+  { value: '24/7', label: 'Continue monitoring' },
+];
+---
+
+<Layout>
+  <!-- NAV -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-forest-900/95 backdrop-blur-sm border-b border-forest-800">
+    <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <!-- Radar logo -->
+        <div class="relative w-8 h-8 flex items-center justify-center">
+          <svg viewBox="0 0 32 32" class="w-8 h-8" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="9" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="4" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="1.5" fill="#5fa67a"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <span class="block text-white font-semibold text-sm">Milieumeetnet</span>
+          <span class="block text-forest-400 text-xs font-mono">Nederland</span>
+        </div>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm text-forest-300">
+        <a href="#over-ons" class="hover:text-white transition-colors">Over ons</a>
+        <a href="#meetstations" class="hover:text-white transition-colors">Meetstations</a>
+        <a href="#metingen" class="hover:text-white transition-colors">Wat meten wij</a>
+        <a href="#registratie" class="hover:text-white transition-colors">Registratie</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+      </div>
+
+      <a href="#contact" class="btn-primary text-sm py-2 px-4 rounded-lg">
+        Aanmelden meetstation
+      </a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center bg-forest-900 dot-grid pt-16 overflow-hidden">
+    <!-- Animated radar rings -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="relative w-[600px] h-[600px]">
+        <div class="radar-ring absolute inset-0 rounded-full border border-forest-500/20"></div>
+        <div class="radar-ring absolute inset-0 rounded-full border border-forest-500/15"></div>
+        <div class="radar-ring absolute inset-0 rounded-full border border-forest-500/10"></div>
+      </div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="section-label text-forest-400 mb-4">Stichting Milieumeetnet Nederland</p>
+        <h1 class="text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
+          Milieumonitoring<br/>
+          <span class="text-forest-400">voor iedereen</span>
+        </h1>
+        <p class="text-lg text-forest-300 leading-relaxed mb-8 max-w-lg">
+          Wij beheren een landelijk netwerk van gecertificeerde meetstations voor luchtkwaliteit, geluid en klimaatdata. Transparant, onafhankelijk en continu.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#meetstations" class="btn-primary">
+            Bekijk het netwerk
+          </a>
+          <a href="#registratie" class="btn-outline border-forest-600 text-forest-300 hover:bg-forest-700 hover:text-white">
+            Registratie & certificering
+          </a>
+        </div>
+      </div>
+
+      <!-- Live indicator card -->
+      <div class="flex justify-center lg:justify-end">
+        <div class="bg-forest-800/60 border border-forest-700 rounded-2xl p-8 w-full max-w-sm backdrop-blur-sm">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span class="text-green-400 text-sm font-mono font-medium">LIVE METING ACTIEF</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-forest-700 pb-4">
+              <span class="text-forest-400 text-sm">Netwerk status</span>
+              <span class="text-white font-medium">In bedrijf</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-forest-700 pb-4">
+              <span class="text-forest-400 text-sm">Actieve stations</span>
+              <span class="text-white font-mono font-medium">247</span>
+            </div>
+            <div class="flex justify-between items-center border-b border-forest-700 pb-4">
+              <span class="text-forest-400 text-sm">Sectoren</span>
+              <span class="text-white font-mono font-medium">12 / NL</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-forest-400 text-sm">Meetfrequentie</span>
+              <span class="text-white font-mono font-medium">elke 5 min.</span>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-6 border-t border-forest-700">
+            <p class="text-forest-500 text-xs font-mono">Registratienummer actueel netwerk</p>
+            <p class="text-forest-300 font-mono text-lg mt-1">NR. 397/2026-0992h</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="absolute bottom-0 inset-x-0 bg-forest-800/80 border-t border-forest-700 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+        {stats.map((s) => (
+          <div class="text-center">
+            <p class="text-2xl font-bold font-mono text-white">{s.value}</p>
+            <p class="text-forest-400 text-xs mt-0.5">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- OVER ONS -->
+  <section id="over-ons" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="section-label mb-3">Over de stichting</p>
+          <h2 class="text-4xl font-bold text-forest-900 mb-6">Onafhankelijke milieudata voor Nederland</h2>
+          <p class="text-forest-700 leading-relaxed mb-4">
+            Stichting Milieumeetnet Nederland is een onafhankelijke non-profitorganisatie die een landelijk dekkend netwerk van gecertificeerde meetstations beheert. Onze data is vrij toegankelijk voor burgers, gemeenten, onderzoekers en beleidsmakers.
+          </p>
+          <p class="text-forest-700 leading-relaxed mb-8">
+            Elk meetstation in ons netwerk doorloopt een strenge certificeringsprocedure en wordt geregistreerd met een uniek registratienummer. Zo garanderen wij de betrouwbaarheid en herleidbaarheid van alle meetdata.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4">
+            {[
+              { title: 'Onafhankelijk', desc: 'Geen commerciële belangen — zuivere data' },
+              { title: 'Gecertificeerd', desc: 'Elk station geregistreerd & gevalideerd' },
+              { title: 'Open data', desc: 'Vrij toegankelijk voor iedereen' },
+              { title: 'Continu', desc: '24/7 monitoring, 365 dagen per jaar' },
+            ].map((item) => (
+              <div class="bg-forest-50 rounded-xl p-4 border border-forest-100">
+                <p class="font-semibold text-forest-800 mb-1">{item.title}</p>
+                <p class="text-sm text-forest-600">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Logo groot -->
+        <div class="flex justify-center">
+          <div class="relative w-72 h-72 flex items-center justify-center">
+            <div class="absolute inset-0 bg-forest-50 rounded-full border-4 border-forest-200"></div>
+            <svg viewBox="0 0 200 200" class="relative w-52 h-52" fill="none">
+              <circle cx="100" cy="100" r="90" stroke="#1e452e" stroke-width="3"/>
+              <circle cx="100" cy="100" r="65" stroke="#1e452e" stroke-width="2.5"/>
+              <circle cx="100" cy="100" r="40" stroke="#1e452e" stroke-width="2"/>
+              <circle cx="100" cy="100" r="16" stroke="#1e452e" stroke-width="2"/>
+              <circle cx="100" cy="100" r="5" fill="#1e452e"/>
+              <!-- Signal lines -->
+              <line x1="100" y1="10" x2="100" y2="84" stroke="#1e452e" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+              <line x1="100" y1="116" x2="100" y2="190" stroke="#1e452e" stroke-width="1" stroke-dasharray="4 3" opacity="0.4"/>
+            </svg>
+            <div class="absolute bottom-8 text-center">
+              <p class="text-forest-800 font-bold text-sm">MILIEUMEETNET</p>
+              <p class="text-forest-600 text-xs tracking-widest">NEDERLAND</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAT METEN WIJ -->
+  <section id="metingen" class="py-24 bg-forest-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <p class="section-label mb-3">Meetparameters</p>
+        <h2 class="text-4xl font-bold text-forest-900 mb-4">Wat meten onze stations?</h2>
+        <p class="text-forest-600 max-w-xl mx-auto">Elk gecertificeerd meetstation registreert minimaal vier van de volgende parameters, afhankelijk van locatie-ID en sectortype.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {metingen.map((m) => (
+          <div class="card group">
+            <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-forest-200 transition-colors">
+              <span class="text-xl font-bold font-mono text-forest-700">{m.label}</span>
+            </div>
+            <h3 class="font-semibold text-forest-900 mb-1">{m.naam}</h3>
+            <p class="text-sm text-forest-500">Eenheid: <span class="font-mono">{m.eenheid}</span></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MEETSTATIONS -->
+  <section id="meetstations" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <p class="section-label mb-3">Het netwerk</p>
+          <h2 class="text-4xl font-bold text-forest-900">Actieve meetstations</h2>
+        </div>
+        <p class="text-forest-500 text-sm max-w-xs">Selectie uit het netwerk. Alle 247 stations zijn opgenomen in het officieel register.</p>
+      </div>
+
+      <div class="overflow-hidden rounded-2xl border border-forest-200">
+        <table class="w-full text-sm">
+          <thead class="bg-forest-800 text-forest-100">
+            <tr>
+              <th class="text-left px-6 py-4 font-medium">Locatie-ID</th>
+              <th class="text-left px-6 py-4 font-medium">Locatie</th>
+              <th class="text-left px-6 py-4 font-medium hidden md:table-cell">Type meting</th>
+              <th class="text-left px-6 py-4 font-medium">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-forest-100">
+            {meetstations.map((s, i) => (
+              <tr class={i % 2 === 0 ? 'bg-white' : 'bg-forest-50/50'}>
+                <td class="px-6 py-4 font-mono text-forest-600 text-xs">{s.id}</td>
+                <td class="px-6 py-4 font-medium text-forest-900">{s.locatie}</td>
+                <td class="px-6 py-4 text-forest-600 hidden md:table-cell">{s.type}</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-100 px-2.5 py-1 rounded-full">
+                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                    {s.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4 text-xs text-forest-400 text-center font-mono">
+        Register bijgewerkt: mei 2026 · 247 stations actief · Geldig t/m 12—2027
+      </p>
+    </div>
+  </section>
+
+  <!-- REGISTRATIE / BADGE -->
+  <section id="registratie" class="py-24 bg-forest-900 dot-grid">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="section-label text-forest-400 mb-3">Certificering</p>
+          <h2 class="text-4xl font-bold text-white mb-6">Registratie & certificering van meetstations</h2>
+          <p class="text-forest-300 leading-relaxed mb-6">
+            Elk meetstation dat wordt opgenomen in het Milieumeetnet Nederland-netwerk ontvangt een officieel registratienummer en een gecertificeerd badge. Dit garandeert dat het station voldoet aan onze technische normen en nauwkeurigheidsvereisten.
+          </p>
+          <ul class="space-y-3 mb-8">
+            {[
+              'Uniek registratienummer (format: NR. XXX/YYYY-NNNNx)',
+              'Locatie-ID gekoppeld aan sector en gemeente',
+              'Gecertificeerd badge voor fysieke plaatsing op het station',
+              'Jaarlijkse her-certificering vereist',
+              'Opgenomen in het openbare MMN-register',
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-forest-300 text-sm">
+                <svg class="w-5 h-5 text-forest-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href="#contact" class="btn-primary">
+            Aanmelden voor certificering
+          </a>
+        </div>
+
+        <!-- Badge replica -->
+        <div class="flex justify-center">
+          <div class="bg-white rounded-2xl p-2 shadow-2xl w-full max-w-sm">
+            <div class="rounded-xl overflow-hidden border-4 border-forest-800">
+              <!-- Badge header -->
+              <div class="bg-white p-6 flex items-center gap-4 border-b-2 border-forest-800">
+                <div class="w-16 h-16 shrink-0">
+                  <svg viewBox="0 0 64 64" fill="none" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="#193a26" stroke-width="2"/>
+                    <circle cx="32" cy="32" r="21" stroke="#193a26" stroke-width="2"/>
+                    <circle cx="32" cy="32" r="12" stroke="#193a26" stroke-width="2"/>
+                    <circle cx="32" cy="32" r="4" fill="#193a26"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold tracking-widest text-forest-800 uppercase">Stichting</p>
+                  <p class="text-xl font-black text-forest-900 leading-tight">MILIEUMEETNET</p>
+                  <p class="text-xl font-black text-forest-900 leading-tight">NEDERLAND</p>
+                </div>
+              </div>
+
+              <!-- Badge banner -->
+              <div class="bg-forest-800 py-2.5 text-center">
+                <p class="text-white text-[10px] font-bold tracking-[0.2em] uppercase">
+                  Meetstation · Milieumonitoring
+                </p>
+              </div>
+
+              <!-- Badge body -->
+              <div class="bg-white p-6 space-y-4">
+                <div>
+                  <p class="text-[9px] tracking-widest uppercase text-forest-500 font-medium mb-1">Registratienummer</p>
+                  <p class="text-3xl font-black text-forest-900 font-mono">NR. 397/2026-0992h</p>
+                </div>
+                <hr class="border-forest-200"/>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-[9px] uppercase tracking-widest text-forest-500 mb-0.5">Status</p>
+                    <p class="text-sm font-bold text-forest-900">In bedrijf —<br/>actieve meting</p>
+                  </div>
+                  <div>
+                    <p class="text-[9px] uppercase tracking-widest text-forest-500 mb-0.5">Geldig t/m</p>
+                    <p class="text-sm font-bold text-forest-900">12 — 2027</p>
+                  </div>
+                  <div>
+                    <p class="text-[9px] uppercase tracking-widest text-forest-500 mb-0.5">Locatie-ID</p>
+                    <p class="text-sm font-bold text-forest-900">MMN-NL / sector 12</p>
+                  </div>
+                  <div>
+                    <p class="text-[9px] uppercase tracking-widest text-forest-500 mb-0.5">Contact</p>
+                    <p class="text-sm font-bold text-forest-900">info@milieumeetnet.nl</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Badge footer -->
+              <div class="bg-forest-100 border-t-2 border-forest-800 px-6 py-3">
+                <p class="text-[9px] font-black tracking-widest text-forest-800 uppercase text-center">
+                  Niet verplaatsen of openen — Meting in bedrijf
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16">
+        <div>
+          <p class="section-label mb-3">Contact</p>
+          <h2 class="text-4xl font-bold text-forest-900 mb-6">Neem contact op</h2>
+          <p class="text-forest-600 leading-relaxed mb-8">
+            Vragen over het netwerk, aanmelding van een nieuw meetstation, of samenwerking? Stuur ons een bericht en wij reageren binnen twee werkdagen.
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-forest-900">E-mail</p>
+                <a href="mailto:info@milieumeetnet.nl" class="text-forest-600 hover:text-forest-800 transition-colors">info@milieumeetnet.nl</a>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-forest-900">Certificering</p>
+                <p class="text-forest-600">Reageer binnen 5 werkdagen</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-forest-900">Stichting Milieumeetnet Nederland</p>
+                <p class="text-forest-600 text-sm">KvK-geregistreerde non-profitorganisatie</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div class="bg-forest-50 rounded-2xl p-8 border border-forest-100">
+          <form id="contact-form" class="space-y-5" novalidate>
+            <!-- Honeypot -->
+            <input type="text" name="bot-field" class="hidden" tabindex="-1" autocomplete="off"/>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="block text-sm font-medium text-forest-700 mb-1.5">Naam <span class="text-red-500">*</span></label>
+                <input type="text" id="name" name="name" class="input-field" placeholder="Uw naam" required/>
+              </div>
+              <div>
+                <label for="organisation" class="block text-sm font-medium text-forest-700 mb-1.5">Organisatie</label>
+                <input type="text" id="organisation" name="organisation" class="input-field" placeholder="Bedrijf / gemeente"/>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="email" class="block text-sm font-medium text-forest-700 mb-1.5">E-mail <span class="text-red-500">*</span></label>
+                <input type="email" id="email" name="email" class="input-field" placeholder="naam@organisatie.nl" required/>
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-medium text-forest-700 mb-1.5">Telefoon</label>
+                <input type="tel" id="phone" name="phone" class="input-field" placeholder="06 — — — — — — — —"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="subject" class="block text-sm font-medium text-forest-700 mb-1.5">Onderwerp</label>
+              <select id="subject" name="subject" class="input-field">
+                <option value="">Kies onderwerp...</option>
+                <option value="Aanmelding nieuw meetstation">Aanmelding nieuw meetstation</option>
+                <option value="Certificeringsvraag">Certificeringsvraag</option>
+                <option value="Data & rapportage">Data & rapportage</option>
+                <option value="Samenwerking">Samenwerking</option>
+                <option value="Anders">Anders</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-medium text-forest-700 mb-1.5">Bericht <span class="text-red-500">*</span></label>
+              <textarea id="message" name="message" rows="4" class="input-field resize-none" placeholder="Uw bericht..." required></textarea>
+            </div>
+
+            <!-- Status messages -->
+            <div id="form-success" class="hidden bg-green-50 border border-green-200 text-green-800 rounded-lg px-4 py-3 text-sm">
+              Uw bericht is ontvangen. Wij reageren zo spoedig mogelijk.
+            </div>
+            <div id="form-error" class="hidden bg-red-50 border border-red-200 text-red-800 rounded-lg px-4 py-3 text-sm">
+              Er is iets misgegaan. Probeer het opnieuw of mail ons direct.
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-primary w-full justify-center">
+              <span id="btn-text">Bericht versturen</span>
+              <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-forest-900 border-t border-forest-800 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <svg viewBox="0 0 32 32" class="w-8 h-8" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="9" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="4" stroke="#5fa67a" stroke-width="1.5"/>
+            <circle cx="16" cy="16" r="1.5" fill="#5fa67a"/>
+          </svg>
+          <div>
+            <p class="text-white font-semibold text-sm">Stichting Milieumeetnet Nederland</p>
+            <p class="text-forest-500 text-xs">Milieumonitoring voor iedereen</p>
+          </div>
+        </div>
+
+        <div class="flex gap-8 text-sm text-forest-400">
+          <a href="#over-ons" class="hover:text-white transition-colors">Over ons</a>
+          <a href="#meetstations" class="hover:text-white transition-colors">Meetstations</a>
+          <a href="#registratie" class="hover:text-white transition-colors">Registratie</a>
+          <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        </div>
+
+        <p class="text-forest-600 text-xs">
+          © {new Date().getFullYear()} Stichting Milieumeetnet Nederland
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+    const btnSpinner = document.getElementById('btn-spinner') as SVGElement;
+    const formSuccess = document.getElementById('form-success') as HTMLDivElement;
+    const formError = document.getElementById('form-error') as HTMLDivElement;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formSuccess.classList.add('hidden');
+      formError.classList.add('hidden');
+
+      submitBtn.disabled = true;
+      btnText.textContent = 'Versturen...';
+      btnSpinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await res.json() as { success: boolean; error?: string };
+
+        if (data.success) {
+          formSuccess.classList.remove('hidden');
+          form.reset();
+        } else {
+          formError.textContent = data.error || 'Er is iets misgegaan.';
+          formError.classList.remove('hidden');
+        }
+      } catch {
+        formError.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Bericht versturen';
+        btnSpinner.classList.add('hidden');
+      }
+    });
+  </script>
+</Layout>

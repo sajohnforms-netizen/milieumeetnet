@@ -1,0 +1,49 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'Stichting Milieumeetnet Nederland — Milieumonitoring voor iedereen',
+  description = 'Stichting Milieumeetnet Nederland beheert een landelijk netwerk van gecertificeerde meetstations voor luchtkwaliteit, geluid en klimaatdata. Open data, transparante rapportage.',
+  canonical = 'https://milieumeetnet.nl/',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="nl_NL" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Stichting Milieumeetnet Nederland",
+        "url": "https://milieumeetnet.nl",
+        "email": "info@milieumeetnet.nl",
+        "description": "Landelijk netwerk van gecertificeerde milieumonitoringstations"
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
